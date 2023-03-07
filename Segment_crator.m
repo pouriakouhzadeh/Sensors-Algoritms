@@ -1,6 +1,4 @@
-close all
-clear all
-format bank
+function [Vi,Ri] = Segment_crator()
 Size=0;
 while Size<10
 Size=round(rand*30);
@@ -10,7 +8,7 @@ Vi(i,1)=round(rand*1000);
 Vi(i,2)=round(rand*1000);
 end
 
-plot(Vi(:,1),Vi(:,2),'*')
+
 Ri=0;
 min=100000;
 for(j=1:size(Vi,1))
@@ -23,9 +21,6 @@ for(j=1:size(Vi,1))
         Ri=j;
     end
 end
-hold all
-plot(Vi(Ri,1),Vi(Ri,2),'*r')
-title('2-D Sensors location 1000*1000 (M M)')
-xlabel('1000 Meter"s')
-ylabel('1000 Meter"s')
-Ri
+
+end
+
