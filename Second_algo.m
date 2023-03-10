@@ -60,14 +60,16 @@ for(i = 1 : 2 : size(Segments,2))
     end
 end
 % Plotting 
+
+
 for(i=1 : 2 : size(Segments,2))
-     plot(Segments(:,i),Segments(:,i+1),'+')
+     plot(Segments(:,i),Segments(:,i+1),'+','DisplayName','Sensor')
      hold all
 end
 n = 1 ;
 m=1;
 for(i=1 : size(Ri,1))
-     plot(Segments(Ri(i,1),n),Segments(Ri(i,1),n+1),'*r')
+     plot(Segments(Ri(i,1),n),Segments(Ri(i,1),n+1),'*r','DisplayName','Representative sensor')
      R_N(m,1) = Segments(Ri(i,1),n);
      R_N(m,2) = Segments(Ri(i,1),n+1);
      m = m + 1;
@@ -84,7 +86,8 @@ plot(MW_X,MW_Y,'--gs',...
     'LineWidth',5,...
     'MarkerSize',15,...
     'MarkerEdgeColor','k',...
-    'MarkerFaceColor',[0.5,0.5,0.5])
+    'MarkerFaceColor',[0.5,0.5,0.5],...
+    'DisplayName','Mobile well')
 
 % Find the road map of mobile well
 R_N_TEMP = R_N;
@@ -118,7 +121,7 @@ NEW_R_N(end,2) = NEW_R_N(1,2);
 % Plot step by step road map of mobile well
 for(i = 1 : size(NEW_R_N,1)-1)
     w = waitforbuttonpress;    
-    plot(NEW_R_N(i:i+1,1),NEW_R_N(i:i+1,2))
+    plot(NEW_R_N(i:i+1,1),NEW_R_N(i:i+1,2),'DisplayName',string(i)+'st Step of moving M_W')
 end
-
+legend
 
