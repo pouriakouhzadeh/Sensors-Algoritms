@@ -4,7 +4,7 @@ format bank
 
 % Crate random number of segmet's
 Size = 0;
-while Size < 4 || Size > 10 
+while Size < 4 || Size > 15 
     Size = round (rand*100);
 end
 
@@ -65,9 +65,60 @@ for(i=1 : 2 : size(Segments,2))
      hold all
 end
 n = 1 ;
+m=1;
 for(i=1 : size(Ri,1))
      plot(Segments(Ri(i,1),n),Segments(Ri(i,1),n+1),'*r')
+     R_N(m,1) = Segments(Ri(i,1),n);
+     R_N(m,2) = Segments(Ri(i,1),n+1);
+     m = m + 1;
      n = n + 2 ;
      hold all
 end
+
+% Generate Mobile Well initial location position
+MW_X = round((rand*Size)*5000);
+MW_Y = round((rand*Size)*5000);
+
+% Plot Mobile well
+plot(MW_X,MW_Y,'--gs',...
+    'LineWidth',5,...
+    'MarkerSize',15,...
+    'MarkerEdgeColor','k',...
+    'MarkerFaceColor',[0.5,0.5,0.5])
+
+% Find the road map of mobile well
+R_N_TEMP = R_N;
+MW_TEMP(1,1) = MW_X;
+MW_TEMP(1,2) = MW_Y;
+n = 1;
+NEW_R_N(n,1) = MW_X;
+NEW_R_N(n,2) = MW_Y;
+
+for(i = 1 : size(R_N,1))
+        min =  100000000 ;
+        for(j = 1 : size(R_N,1))
+            if (R_N_TEMP(j,1) ~= 0)
+               if ( abs ( R_N_TEMP(j,1) - MW_TEMP(1,1) ) +  abs ( R_N_TEMP(j,2) - MW_TEMP(1,2) ) ) < min
+                    min = ( abs ( R_N_TEMP(j,1) - MW_TEMP(1,1) ) +  abs ( R_N_TEMP(j,2) - MW_TEMP(1,2) ) );
+                    Index = j;
+               end
+            end
+        end
+        n = n + 1;
+        NEW_R_N(n,1) = R_N_TEMP(Index,1);
+        NEW_R_N(n,2) = R_N_TEMP(Index,2);
+        MW_TEMP(1,1) = R_N_TEMP(Index,1);
+        MW_TEMP(1,2) = R_N_TEMP(Index,2);
+        R_N_TEMP(Index,1) = 0;
+        R_N_TEMP(Index,2) = 0;
+           
+end
+NEW_R_N(end+1,1) = NEW_R_N(1,1);
+NEW_R_N(end,2) = NEW_R_N(1,2);
+% Plot step by step road map of mobile well
+for(i = 1 : size(NEW_R_N,1)-1)
+    w = waitforbuttonpress;    
+    plot(NEW_R_N(i:i+1,1),NEW_R_N(i:i+1,2))
+end
+
 
